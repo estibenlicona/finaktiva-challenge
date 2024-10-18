@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <a class="period-button" *ngFor="let metric of metrics" [routerLink]="['/dashboard', metric.Period]" routerLinkActive="active-period">
+      {{ metric.Name }}
+    </a>
+  </div>
+  <div>
+    <h2>Listado de Items</h2>
+    <ul>
+      <li *ngFor="let item of visibleItems" >
+        {{ item.name }}
+      </li>
+    </ul>
+
+    <button (click)="loadMore()"
+            [disabled]="visibleItems.length >= allItems.length">
+      Ver Más
+    </button>
+
+    <p *ngIf="visibleItems.length >= allItems.length">
+    No hay más elementos para mostrar.
+    </p>
+  </div>
+</div>
+
