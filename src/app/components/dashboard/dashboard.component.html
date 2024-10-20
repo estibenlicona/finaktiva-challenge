@@ -1,25 +1,32 @@
 <div class="container">
-  <div class="row">
-    <a class="period-button" *ngFor="let metric of metrics" [routerLink]="['/dashboard', metric.Period]" routerLinkActive="active-period">
-      {{ metric.Name }}
-    </a>
-  </div>
-  <div>
-    <h2>Listado de Items</h2>
+  <h4>Eventos registrados</h4>
+  <form [formGroup]="eventForm" class="row items-center">
+    <label for="eventType">Tipo de evento:</label>
+    <select id="eventType" formControlName="eventType" (change)="filterEvents()">
+      <option value="Api">Api</option>
+      <option value="Manual">Formulario de eventos manual</option>
+    </select>
+
+    <label for="startDate">Fecha inicio:</label>
+    <input type="date" id="startDate" formControlName="startDate" (change)="onDateChange()" />
+
+    <label for="endDate">Fecha fin:</label>
+    <input type="date" id="endDate" formControlName="endDate" (change)="onDateChange()" />
+  </form>
+
+
+  <div class="row flex-column">
     <ul>
-      <li *ngFor="let item of visibleItems" >
-        {{ item.name }}
+      <li class="event-row" *ngFor="let event of visibleEvents">
+        <span class="event-title">{{ event.Registration | date:'yyyy-MM-dd hh:mm:ss' }} | {{ event.Type }}</span>
+        <span class="event-description">Descripción: {{ event.Description }}</span>
       </li>
     </ul>
 
-    <button (click)="loadMore()"
-            [disabled]="visibleItems.length >= allItems.length">
-      Ver Más
-    </button>
+    <a class="more-events" (click)="loadMore()">Ver más</a>
 
-    <p *ngIf="visibleItems.length >= allItems.length">
-    No hay más elementos para mostrar.
+    <p *ngIf="!hasMoreItems && !isLoading">
+      No hay más eventos para mostrar.
     </p>
   </div>
 </div>
-
